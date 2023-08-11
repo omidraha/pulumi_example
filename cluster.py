@@ -10,7 +10,7 @@ AVAILABILITY_ZONE_NAMES = [
 
 
 # Cluster
-def create_cluster(vpc, public_subnet, private_subnet):
+def create_cluster(vpc, public_subnet, private_subnet, eks_worker_role):
     cluster = pulumi_eks.Cluster(
         CLUSTER_NAME,
         vpc_id=vpc.id,
@@ -22,7 +22,14 @@ def create_cluster(vpc, public_subnet, private_subnet):
         desired_capacity=15,
         min_size=1,
         max_size=15,
-        instance_roles=None,
+        instance_role=eks_worker_role,
+        role_mappings=[
+            {
+                'groups': ['system:bootstrappers', 'system:nodes'],
+                'rolearn': eks_worker_role.arn,
+                'username': 'system:node:{{EC2PrivateDNSName}}',
+            }
+        ],
         enabled_cluster_log_types=[
             "api",
             "audit",
