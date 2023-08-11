@@ -1,0 +1,6 @@
+name: example
+runtime:
+  name: python
+  options:
+    virtualenv: venv
+description: A Python Pulumi example program
