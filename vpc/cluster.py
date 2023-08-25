@@ -1,6 +1,6 @@
 import pulumi_eks
 
-from const import CLUSTER_NAME
+from base.const import CLUSTER_NAME
 
 AVAILABILITY_ZONE_NAMES = [
     'us-west-2a',
@@ -19,9 +19,9 @@ def create_cluster(vpc, public_subnet, private_subnet, eks_worker_role):
         create_oidc_provider=True,
         skip_default_node_group=False,
         instance_type="t2.micro",
-        desired_capacity=15,
+        desired_capacity=1,
         min_size=1,
-        max_size=15,
+        max_size=1,
         instance_role=eks_worker_role,
         role_mappings=[
             {

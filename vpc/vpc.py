@@ -1,12 +1,6 @@
 import pulumi_aws
 
-from const import CLUSTER_TAG, CLUSTER_NAME
-
-AVAILABILITY_ZONE_NAMES = [
-    'us-west-2a',
-    'us-west-2b',
-    'us-west-2c'
-]
+from base.const import CLUSTER_TAG, AVAILABILITY_ZONE_NAMES
 
 
 # VPC
