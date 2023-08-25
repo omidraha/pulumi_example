@@ -34,7 +34,6 @@ fb_config_map_data = f"""
     Labels    name=fluent-bit
     Host {DOMAINS[0]}
     port 443
-    Uri /api/prom/push
     tls on
     tls.verify on
     HTTP_USER {GRAFANA_ADMIN}
