@@ -4,46 +4,44 @@ from base.const import DOMAINS
 from const import GRAFANA_ADMIN, GRAFANA_PASS
 
 fb_config_map_data = f"""
-        [SERVICE]
-            Flush         1
-            Log_Level     info
-            Daemon        off
-            Parsers_File  parsers.conf
-            HTTP_Server   On
-            HTTP_Listen   0.0.0.0
-            HTTP_PORT     2020
+[SERVICE]
+    Flush         1
+    Log_Level     info
+    Daemon        off
+    Parsers_File  parsers.conf
+    HTTP_Server   On
+    HTTP_Listen   0.0.0.0
+    HTTP_PORT     2020
+[INPUT]
+    Name      tail
+    Path      /var/log/containers/*.log
+    Parser    docker
+    Tag       kube.*
+[FILTER]
+    Name        kubernetes
+    Match       kube.*
+    Kube_URL    https://kubernetes.default.svc:443
+    Kube_CA_File        /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+    Kube_Token_File     /var/run/secrets/kubernetes.io/serviceaccount/token
+    Kube_Tag_Prefix     kube.var.log.containers.
+    Merge_Log           On
+    Merge_Log_Key       log_processed
+    K8S-Logging.Parser  On
+    K8S-Logging.Exclude Off
+[OUTPUT]
+    Name      loki
+    Match     *
+    Labels    name=fluent-bit
+    Host {DOMAINS[0]}
+    port 443
+    match *
+    Uri /api/prom/push
+    tls on
+    tls.verify on
+    HTTP_USER {GRAFANA_ADMIN}
+    HTTP_PASSWD {GRAFANA_PASS}
+"""
 
-        [INPUT]
-            Name              tail
-            Path              /var/log/containers/*.log
-            Parser            docker
-            Tag               kube.*
-
-        [FILTER]
-            Name                kubernetes
-            Match               kube.*
-            Kube_URL            https://kubernetes.default.svc:443
-            Kube_CA_File        /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-            Kube_Token_File     /var/run/secrets/kubernetes.io/serviceaccount/token
-            Kube_Tag_Prefix     kube.var.log.containers.
-            Merge_Log           On
-            Merge_Log_Key       log_processed
-            K8S-Logging.Parser  On
-            K8S-Logging.Exclude Off
-
-        [OUTPUT]
-            Name              loki
-            Match             *
-            Labels            name=fluent-bit
-            Host {DOMAINS[0]}
-            port 443
-            match *
-            uri /api/prom/push
-            tls on
-            tls.verify on
-            HTTP_USER {GRAFANA_ADMIN}
-            HTTP_PASSWD {GRAFANA_PASS}
-       """
 
 
 def create_fluent_bit(fbc, namespace):
