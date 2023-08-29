@@ -15,4 +15,4 @@ def up():
         provider, NAMESPACE_NAME
     )
     pv = create_pv(namespace)
-    pvc = create_pvc(namespace)
+    pvc = create_pvc(namespace, pv)
