@@ -1,4 +1,5 @@
 import pulumi_kubernetes as kubernetes
+from pulumi import ResourceOptions
 
 
 def create_pv(namespace):
@@ -27,7 +28,7 @@ def create_pv(namespace):
     return pv
 
 
-def create_pvc(namespace):
+def create_pvc(namespace, pv):
     return kubernetes.core.v1.PersistentVolumeClaim(
         'pvc',
         metadata={
@@ -45,7 +46,8 @@ def create_pvc(namespace):
                     "name": "storage-data"
                 }
             },
-            "volume_name": namespace.metadata.name,
+            "volume_name": pv.metadata.name,
             "storageClassName": "storage-base"
-        }
+        },
+        opts=ResourceOptions(depends_on=[pv]),
     )
