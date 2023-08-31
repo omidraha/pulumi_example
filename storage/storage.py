@@ -12,7 +12,7 @@ def create_sc(namespace):
             Immediate
     """
     storage_class = kubernetes.storage.v1.StorageClass(
-        "storage-base",
+        "sc",
         metadata={
             'namespace': namespace.metadata.name,
         },
