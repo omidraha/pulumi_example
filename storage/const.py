@@ -1,0 +1,2 @@
+NAMESPACE_NAME = 'storage'
+

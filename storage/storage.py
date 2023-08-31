@@ -2,7 +2,36 @@ import pulumi_kubernetes as kubernetes
 from pulumi import ResourceOptions
 
 
-def create_pv(namespace):
+def create_sc(namespace):
+    """
+    :param namespace:
+    :return:
+    options:
+        volume_binding_mode:
+            WaitForFirstConsumer
+            Immediate
+    """
+    storage_class = kubernetes.storage.v1.StorageClass(
+        "storage-base",
+        metadata={
+            'namespace': namespace.metadata.name,
+        },
+        provisioner="kubernetes.io/no-provisioner",
+        volume_binding_mode="Immediate",
+    )
+    return storage_class
+
+
+def create_pv_sc(namespace, sc):
+    """
+    :param namespace:
+    :param sc:
+    :return:
+    options:
+        access_modes:
+            ReadWriteOnce
+            ReadWriteMany
+    """
     pv = kubernetes.core.v1.PersistentVolume(
         'pv',
         metadata={
@@ -21,13 +50,14 @@ def create_pv(namespace):
                 'path': "/home/ws/storage",
                 'type': "DirectoryOrCreate"
             },
-            'storage_class_name': "storage-base"
+            'storage_class_name': sc.metadata.name,
         },
+        opts=ResourceOptions(depends_on=[sc]),
     )
     return pv
 
 
-def create_pvc(namespace, pv):
+def create_pvc(namespace, sc):
     return kubernetes.core.v1.PersistentVolumeClaim(
         'pvc',
         metadata={
@@ -45,8 +75,7 @@ def create_pvc(namespace, pv):
                     "name": "storage-data"
                 }
             },
-            "volume_name": pv.metadata.name,
-            "storageClassName": "storage-base"
+            'storage_class_name': sc.metadata.name,
         },
-        opts=ResourceOptions(depends_on=[pv]),
+        opts=ResourceOptions(depends_on=[sc]),
     )

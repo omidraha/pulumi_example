@@ -1,2 +1,2 @@
-NAMESPACE_NAME = 'storage'
+NAMESPACE_NAME = 'volume'
 
