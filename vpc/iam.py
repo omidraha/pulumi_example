@@ -2,7 +2,7 @@ import pulumi_aws
 import json
 from pulumi import log
 
-from const import DEPLOY_NAME_PREFIX
+from base.const import DEPLOY_NAME_PREFIX
 
 
 def create_eks_cluster_role():

@@ -5,7 +5,7 @@ import pulumi_awsx
 from base.const import CLUSTER_TAG, AVAILABILITY_ZONE_NAMES
 
 
-def create_eip(deploy_name_prefix=None):
+def create_eip():
     log.info('[base.vpc.create_eip]')
     eip = pulumi_aws.ec2.Eip(
         'eip',

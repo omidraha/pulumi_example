@@ -1,11 +1,17 @@
+import os
+
+DEP_MODE = 'dev'
+DEPLOY_NAME_PREFIX = '-dev'
+
 CLUSTER_NAME = "example"
 CLUSTER_TAG = "kubernetes.io/cluster/example"
-DEPLOY_NAME_PREFIX = 'st'
+
 AVAILABILITY_ZONE_NAMES = [
     'us-west-2a',
     'us-west-2b',
     'us-west-2c'
 ]
+
 DOMAINS = ['log.example.com']
 
 ANNOTATIONS = {
@@ -20,3 +26,8 @@ ANNOTATIONS = {
         'stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=60',
     'alb.ingress.kubernetes.io/group.name': 'ingress',
 }
+
+REGION = "us-west-2"
+
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
