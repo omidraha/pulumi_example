@@ -423,14 +423,14 @@ def create_fb_cw_cm():
 def create_fb_cw_iam():
     log.info('[base.cw.create_fb_cw_iam]')
     sa = ServiceAccount(
-        'fluent_bit',
+        'fluent-bit',
         metadata={
             'name': 'fluent-bit',
             'namespace': 'amazon-cloudwatch',
         },
     )
     cr = ClusterRole(
-        'fluent_bit_role',
+        'fluent-bit-role',
         rules=[
             {
                 'nonResourceURLs': ['/metrics'],
@@ -444,20 +444,20 @@ def create_fb_cw_iam():
         ],
     )
     crb = ClusterRoleBinding(
-        'fluent_bit_role_binding',
+        'fluent-bit-role-binding',
         metadata={
             'name': 'fluent-bit-role-binding',
         },
         role_ref={
             'api_group': 'rbac.authorization.k8s.io',
             'kind': 'ClusterRole',
-            'name': 'fluent-bit-role',
+            'name': cr.metadata.name,
         },
         subjects=[
             {
                 'kind': 'ServiceAccount',
-                'name': sa.metadata['name'],
-                'namespace': sa.metadata['namespace'],
+                'name': sa.metadata.name,
+                'namespace': sa.metadata.namespace,
             },
         ],
     )
