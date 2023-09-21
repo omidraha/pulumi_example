@@ -2,14 +2,17 @@ import pulumi_aws.ec2
 from pulumi import log, ResourceOptions
 import pulumi_awsx
 
-from base.const import CLUSTER_TAG, AVAILABILITY_ZONE_NAMES
+from base.const import CLUSTER_TAG, AVAILABILITY_ZONE_NAMES, DEPLOY_NAME_PREFIX
 
 
 def create_eip():
     log.info('[base.vpc.create_eip]')
+    name = f'eip{DEPLOY_NAME_PREFIX}'
     eip = pulumi_aws.ec2.Eip(
-        'eip',
-        tags={"Name": 'eip'},
+        name,
+        tags={
+            "Name": name
+        },
     )
     return eip
 
@@ -17,8 +20,8 @@ def create_eip():
 # VPC
 def create_vpc(eip):
     log.info('[base.vpc.create_vpc]')
-    name = 'vpc'
-    cidr_block = ''
+    name = f'vpc{DEPLOY_NAME_PREFIX}'
+    cidr_block = '172.16.0.0/16'
     vpc = pulumi_awsx.ec2.Vpc(
         name,
         cidr_block=cidr_block,
@@ -49,25 +52,3 @@ def create_vpc(eip):
         opts=ResourceOptions(depends_on=[eip]),
     )
     return vpc
-
-
-def get_vpcs():
-    """
-    :return:
-    Example:
-         vpcs.ids: [
-            'vpc-0ad0ce310ef05ae66',
-            'vpc-0b4f3199c9b017437',
-            'vpc-05fba5d0f6c030b93'
-         ]
-    """
-    log.info('[base.vpc.get_vpc]')
-    vpc_items = pulumi_aws.ec2.get_vpcs()
-    vpcs = list()
-    for vpc_id in vpc_items.ids:
-        vpc = pulumi_aws.ec2.get_vpc(id=vpc_id)
-        vpc_name = vpc.tags.get("Name")
-        if vpc_name in VPC_NAMES:
-            vpcs.append(vpc)
-
-    return vpcs

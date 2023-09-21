@@ -1,6 +1,6 @@
-name: example
+name: pulumi_example
 runtime:
   name: python
   options:
     virtualenv: venv
-description: A Python Pulumi example program
+description: A minimal AWS Python Pulumi program

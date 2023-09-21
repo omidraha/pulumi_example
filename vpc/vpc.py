@@ -8,7 +8,7 @@ def create_vpc():
     vpc = pulumi_aws.ec2.Vpc(
         'vpc',
         tags={"Name": "vpc"},
-        cidr_block='12.0.0.0/16',
+        cidr_block='172.16.0.0/16',
     )
     return vpc
 
@@ -23,7 +23,7 @@ def create_public_subnet(vpc):
             CLUSTER_TAG: "owned",
             'kubernetes.io/role/elb': '1',
         },
-        cidr_block='12.0.1.0/24',
+        cidr_block='172.16.0.0/24',
         map_public_ip_on_launch=True,
         assign_ipv6_address_on_creation=False,
     )
@@ -42,7 +42,7 @@ def create_private_subnet(vpc):
                 CLUSTER_TAG: "owned",
                 'kubernetes.io/role/internal-elb': '1',
             },
-            cidr_block='12.0.2.0/24',
+            cidr_block='172.16.0.0/24',
             map_public_ip_on_launch=False,
             assign_ipv6_address_on_creation=False,
         )

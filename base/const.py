@@ -1,15 +1,16 @@
 import os
+from pathlib import Path
 
-DEP_MODE = 'dev'
-DEPLOY_NAME_PREFIX = '-dev'
+DEP_MODE = 'exp'
+DEPLOY_NAME_PREFIX = '-exp'
 
-CLUSTER_NAME = "example"
+CLUSTER_NAME = "cluster"
 CLUSTER_TAG = "kubernetes.io/cluster/example"
+NAMESPACE_NAME = 'exp'
 
 AVAILABILITY_ZONE_NAMES = [
     'us-west-2a',
     'us-west-2b',
-    'us-west-2c'
 ]
 
 DOMAINS = ['log.example.com']
@@ -31,3 +32,5 @@ REGION = "us-west-2"
 
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+
+BASE_PATH = (str(Path(__file__).resolve().parent.parent))
