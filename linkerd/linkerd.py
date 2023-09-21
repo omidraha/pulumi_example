@@ -13,6 +13,7 @@ ca = os.path.join(CERT_PATH, f'ca.crt')
 crt = os.path.join(CERT_PATH, f'issuer.crt')
 key = os.path.join(CERT_PATH, f'issuer.key')
 
+
 def create_linkerd_ns():
     """
     :return:
