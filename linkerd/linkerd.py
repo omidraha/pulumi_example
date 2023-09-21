@@ -123,9 +123,8 @@ def create_linkerd_control_plane(
                         "scheme": "kubernetes.io/tls"
                     }
                 },
-                "clusterNetworks": "10.0.0.0/8,11.0.0.0/8,12.0.0.0/8",
+                "clusterNetworks": '172.16.0.0/16',
                 "identityTrustAnchorsPEM": "ca.crt",
-
             },
         ),
         pulumi.ResourceOptions(
