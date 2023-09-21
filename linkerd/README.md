@@ -2,6 +2,7 @@
 Deploy:
 
     git clone https://github.com/omidraha/pulumi_example/
+    cd pulumi_example
     python -r requirements.txt
     pulumi up 
 
