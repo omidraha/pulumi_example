@@ -1,7 +1,7 @@
 import pulumi_eks
 from pulumi import log, ResourceOptions
 
-from base.const import DEPLOY_NAME_PREFIX
+from base.const import DEPLOY_NAME_PREFIX, NODE_AMI_ID
 
 
 def create_cluster(vpc):
@@ -24,6 +24,7 @@ def create_cluster(vpc):
             "authenticator",
         ],
         node_associate_public_ip_address=False,
+        node_ami_id=NODE_AMI_ID,
         vpc_cni_options=pulumi_eks.VpcCniOptionsArgs(
             warm_ip_target=1,
         ),

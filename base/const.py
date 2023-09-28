@@ -34,3 +34,4 @@ AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 
 BASE_PATH = (str(Path(__file__).resolve().parent.parent))
+NODE_AMI_ID = "ami-0bce9ab1f1be3282a"
