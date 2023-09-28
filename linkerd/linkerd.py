@@ -37,6 +37,10 @@ def create_linkerd_viz_ns():
         f'linkerd-viz{DEPLOY_NAME_PREFIX}',
         metadata={
             'name': 'linkerd-viz',
+            'labels': {
+                'linkerd.io/extension': 'viz',
+                'pod-security.kubernetes.io/enforce': 'privileged',
+            },
         },
     )
     return ns
@@ -123,7 +127,7 @@ def create_linkerd_control_plane(
                         "scheme": "kubernetes.io/tls"
                     }
                 },
-                "clusterNetworks": '172.16.0.0/16',
+                "clusterNetworks": '172.16.0.0/16,10.100.0.0/16',
                 "identityTrustAnchorsPEM": "ca.crt",
             },
         ),
