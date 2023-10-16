@@ -3,9 +3,9 @@ import pulumi_eks
 from base.const import CLUSTER_NAME
 
 AVAILABILITY_ZONE_NAMES = [
-    'us-west-2a',
-    'us-west-2b',
-    'us-west-2c'
+    'us-east-2a',
+    'us-east-2b',
+    'us-east-2c'
 ]
 
 

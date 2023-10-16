@@ -1,4 +1,4 @@
-"""An AWS Python Pulumi program"""
+import __init__
 from app.app import create_app
 from base.cluster import create_cluster
 from base.const import NAMESPACE_NAME

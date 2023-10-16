@@ -9,8 +9,9 @@ CLUSTER_TAG = "kubernetes.io/cluster/example"
 NAMESPACE_NAME = 'exp'
 
 AVAILABILITY_ZONE_NAMES = [
-    'us-west-2a',
-    'us-west-2b',
+    'us-east-2a',
+    'us-east-2b',
+    # 'us-east-2c'
 ]
 
 DOMAINS = ['log.example.com']
@@ -28,7 +29,7 @@ ANNOTATIONS = {
     'alb.ingress.kubernetes.io/group.name': 'ingress',
 }
 
-REGION = "us-west-2"
+REGION = "us-east-2"
 
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
