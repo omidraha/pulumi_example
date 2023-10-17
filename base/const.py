@@ -35,4 +35,11 @@ AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 
 BASE_PATH = (str(Path(__file__).resolve().parent.parent))
-NODE_AMI_ID = "ami-0bce9ab1f1be3282a"
+SSH_KEY_PATH = f'{BASE_PATH}/base/data/ssh/'
+
+# Ubuntu
+# NODE_AMI_ID = "ami-0f077ff8a5f26fe79"
+# AMAZON EKS
+# NODE_AMI_ID = "ami-0e832ed7606840c66"
+# Ubuntu EKS
+NODE_AMI_ID = "ami-0d9ec2930add3de7d"
