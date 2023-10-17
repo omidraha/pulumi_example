@@ -1,10 +1,13 @@
 import pulumi_eks
 from pulumi import log, ResourceOptions
-
 from base.const import DEPLOY_NAME_PREFIX, NODE_AMI_ID
 
 
-def create_cluster(vpc):
+def create_cluster(
+        vpc,
+        security_group=None,
+        node_public_key=None,
+):
     log.info('[base.cluster.create_cluster]')
     cluster = pulumi_eks.Cluster(
         f'cluster{DEPLOY_NAME_PREFIX}',
@@ -23,11 +26,13 @@ def create_cluster(vpc):
             "audit",
             "authenticator",
         ],
-        node_associate_public_ip_address=False,
+        node_associate_public_ip_address=True,
         node_ami_id=NODE_AMI_ID,
         vpc_cni_options=pulumi_eks.VpcCniOptionsArgs(
-            warm_ip_target=1,
+            warm_ip_target=2,
         ),
+        cluster_security_group=security_group,
+        node_public_key=node_public_key.public_key,
         opts=ResourceOptions(depends_on=[vpc]),
     )
     return cluster
