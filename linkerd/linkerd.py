@@ -162,7 +162,7 @@ def create_linkerd_viz(
     )
 
 
-def linkerd_setup(provider):
+def setup(provider):
     """
     :param provider:
     :return:

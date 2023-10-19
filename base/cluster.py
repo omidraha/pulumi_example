@@ -5,8 +5,8 @@ from base.const import DEPLOY_NAME_PREFIX, NODE_AMI_ID
 
 def create_cluster(
         vpc,
-        security_group=None,
         node_public_key=None,
+        node_user_data=None,
 ):
     log.info('[base.cluster.create_cluster]')
     cluster = pulumi_eks.Cluster(
@@ -16,10 +16,10 @@ def create_cluster(
         private_subnet_ids=vpc.private_subnet_ids,
         create_oidc_provider=True,
         skip_default_node_group=False,
-        instance_type="t2.small",
-        desired_capacity=2,
-        min_size=2,
-        max_size=2,
+        instance_type="c5d.xlarge",
+        desired_capacity=3,
+        min_size=3,
+        max_size=3,
         instance_roles=None,
         enabled_cluster_log_types=[
             "api",
@@ -31,8 +31,8 @@ def create_cluster(
         vpc_cni_options=pulumi_eks.VpcCniOptionsArgs(
             warm_ip_target=2,
         ),
-        cluster_security_group=security_group,
         node_public_key=node_public_key.public_key,
+        node_user_data=node_user_data,
         opts=ResourceOptions(depends_on=[vpc]),
     )
     return cluster

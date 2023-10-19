@@ -7,18 +7,18 @@ from base.provider import create_provider
 from base.vpc import create_eip, create_vpc
 import pulumi
 
-from linkerd.linkerd import linkerd_setup
+from linkerd import setup
 
 
-def setup():
+def up():
     eip = create_eip()
     vpc = create_vpc(eip)
     cluster = create_cluster(vpc)
     provider = create_provider(cluster)
     namespace = create_namespace(provider, NAMESPACE_NAME)
     create_app()
-    linkerd_setup(provider)
+    setup(provider)
     pulumi.export("kubeconfig", cluster.kubeconfig)
 
 
-setup()
+up()
