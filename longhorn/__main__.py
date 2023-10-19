@@ -20,7 +20,7 @@ def up():
     )
     provider = create_provider(cluster)
     namespace = create_namespace(provider, NAMESPACE_NAME)
-    setup()
+    setup(provider)
     pulumi.export("kubeconfig", cluster.kubeconfig)
 
 
