@@ -142,31 +142,6 @@ def create_longhorn(provider):
             values={
                 "logLevel": "debug",
                 "region": REGION,
-                "defaultSettings": {
-                    "backupTarget": "s3://backupbucket@us-east-1/backupstore",
-                    "backupTargetCredentialSecret": "minio-secret",
-                    "createDefaultDiskLabeledNodes": True,
-                    "defaultDataPath": "/var/lib/longhorn-example/",
-                    "replicaSoftAntiAffinity": False,
-                    "storageOverProvisioningPercentage": 600,
-                    "storageMinimalAvailablePercentage": 15,
-                    "upgradeChecker": False,
-                    "defaultReplicaCount": 2,
-                    "defaultDataLocality": "disabled",
-                    "defaultLonghornStaticStorageClass": "longhorn-static-example",
-                    "backupstorePollInterval": 500,
-                    "taintToleration": "key1=value1:NoSchedule; key2:NoExecute",
-                    "systemManagedComponentsNodeSelector": "label-key1:label-value1",
-                    "priorityClass": "high-priority",
-                    "autoSalvage": False,
-                    "disableSchedulingOnCordonedNode": False,
-                    "replicaZoneSoftAntiAffinity": False,
-                    "volumeAttachmentRecoveryPolicy": "never",
-                    "nodeDownPodDeletionPolicy": "do-nothing",
-                    "guaranteedInstanceManagerCpu": 15,
-                    "orphanAutoDeletion": False
-                },
-
             },
         ),
         pulumi.ResourceOptions(
