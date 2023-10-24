@@ -7,7 +7,9 @@ from base.utils import get_public_keys
 from base.vpc import create_eip, create_vpc
 import pulumi
 
-from longhorn import setup
+import longhorn
+from pod import create_pod
+from storage.storage import create_sc, create_pvc
 
 
 def up():
@@ -20,7 +22,21 @@ def up():
     )
     provider = create_provider(cluster)
     namespace = create_namespace(provider, NAMESPACE_NAME)
-    setup(provider)
+    longhorn.setup(provider)
+    sc = create_sc(
+        namespace,
+        provisioner="driver.longhorn.io",
+        allow_volume_expansion=True,
+        parameters={
+            "numberOfReplicas": "3",
+            "staleReplicaTimeout": "2880",
+            "fromBackup": "",
+            "fsType": "ext4"
+        }
+    )
+    pvc = create_pvc(namespace, sc)
+    create_pod(namespace, pvc)
+
     pulumi.export("kubeconfig", cluster.kubeconfig)
 
 
