@@ -5,7 +5,7 @@ Clone the project:
 
     git clone https://github.com/omidraha/pulumi_example/
 
-Generate certificates files including `ca.crt`, `ca.key`, `issuer.crt` and `issuer.key`:
+Change the directory:
 
     cd pulumi_example/longhorn
 
