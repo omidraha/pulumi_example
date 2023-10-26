@@ -10,6 +10,7 @@ from base.vpc import create_eip, create_vpc
 import pulumi
 
 import longhorn
+from fluentbit import fluentbit
 from pod import create_pod
 from storage.storage import create_sc, create_pvc
 
@@ -53,7 +54,10 @@ def up():
         namespace=namespace,
         storage_class="longhorn",
     )
-
+    fluentbit.setup(
+        provider,
+        storage_class="longhorn"
+    )
     pulumi.export("kubeconfig", cluster.kubeconfig)
 
 
