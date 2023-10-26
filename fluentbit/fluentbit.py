@@ -6,29 +6,28 @@ from .const import GRAFANA_ADMIN, GRAFANA_PASS, GRAFANA_NAMESPACE_NAME
 
 fb_config_map_data = f"""
 [SERVICE]
-    Flush         1
-    Log_Level     info
-    Daemon        off
-    Parsers_File  parsers.conf
-    HTTP_Server   On
-    HTTP_Listen   0.0.0.0
-    HTTP_PORT     2020
+    Flush             5
+    Grace             30
+    Log_Level         info
+    Daemon            off
+    Parsers_File      parsers.conf
+    HTTP_Server       On
+    HTTP_Listen       0.0.0.0
+    HTTP_Port         2020
 [INPUT]
-    Name      tail
-    Path      /var/log/containers/*.log
-    Parser    docker
-    Tag       kube.*
+    Name    tail
+    Tag     kube.*
+    Path    /var/log/containers/*.log
+    Parser  docker
 [FILTER]
-    Name        kubernetes
-    Match       kube.*
-    Kube_URL    https://kubernetes.default.svc:443
-    Kube_CA_File        /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-    Kube_Token_File     /var/run/secrets/kubernetes.io/serviceaccount/token
-    Kube_Tag_Prefix     kube.var.log.containers.
-    Merge_Log           On
-    Merge_Log_Key       log_processed
-    K8S-Logging.Parser  On
-    K8S-Logging.Exclude Off
+    Name             kubernetes
+    Match            kube.*
+    Kube_URL         https://kubernetes.default.svc:443
+    Kube_CA_File     /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+    Kube_Token_File  /var/run/secrets/kubernetes.io/serviceaccount/token
+    Kube_Tag_Prefix  kube.var.log.containers.
+    Merge_Log        On
+    Merge_Log_Key    log_processed
 [OUTPUT]
     Name      loki
     Match     *
@@ -117,7 +116,7 @@ def create_grafana(
     """
     :param namespace:
     :param annotations:
-    :param arn:
+    :param storage_class:
     :return:
     @see: https://artifacthub.io/packages/helm/grafana/grafana
     """
@@ -163,6 +162,8 @@ def create_loki(namespace, storage_class):
     :param storage_class:
     :return:
     @see: https://artifacthub.io/packages/helm/grafana/loki
+    @see: https://grafana.com/docs/loki/next/setup/install/helm/configure-storage/
+    @see: https://grafana.com/docs/loki/next/setup/install/helm/install-scalable/
     @see: https://grafana.com/docs/loki/latest/installation/helm/install-monolithic/
     @see: https://grafana.com/docs/loki/next/setup/install/helm/reference/
     """
@@ -178,8 +179,15 @@ def create_loki(namespace, storage_class):
             values={
                 "loki": {
                     "auth_enabled": False,
+                    "commonConfig": {
+                        "replication_factor": 1
+                    },
+                    "storage": {
+                        "type": "filesystem"
+                    },
                 },
                 "singleBinary": {
+                    "replicas": 1,
                     "persistence": {
                         'storageClass': storage_class,
                         "size": "1Gi",
@@ -202,9 +210,6 @@ def create_loki(namespace, storage_class):
                         'storageClass': storage_class,
                         "size": "1Gi",
                     },
-                },
-                "commonConfig": {
-                    "replication_factor": 1
                 },
 
             },
