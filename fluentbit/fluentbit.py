@@ -33,7 +33,7 @@ fb_config_map_data = f"""
     Name      loki
     Match     *
     Labels    name=fluent-bit
-    host      loki-backend.svc.cluster.local
+    host      loki-backend.fluent-bit.svc.cluster.local
     port      3100
     auto_kubernetes_labels on
 """
