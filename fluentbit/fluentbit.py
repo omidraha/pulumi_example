@@ -20,10 +20,9 @@ fb_config_map_data = """
     Path        /var/log/containers/*.log    
     Exclude_Path    /var/log/containers/fluent-bit*,/var/log/containers/aws-node*,/var/log/containers/kube-proxy*
     multiline.parser    docker, cri
-    Buffer_Chunk_Size 10MB
-    Buffer_Max_Size   40MB
-    Skip_Long_Lines Off
-    Mem_Buf_Limit 100MB        
+    Mem_Buf_Limit         100MB
+    Refresh_Interval      10
+    Skip_Long_Lines       On   
 [FILTER]
     Name             kubernetes
     Match            kube.*
@@ -33,6 +32,8 @@ fb_config_map_data = """
     Kube_Tag_Prefix  kube.var.log.containers.
     Merge_Log        On
     Merge_Log_Key    log_processed
+    K8S-Logging.Parser    On
+    K8S-Logging.Exclude   Off    
 [OUTPUT]
     Name      loki
     Match     *
