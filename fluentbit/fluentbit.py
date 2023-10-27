@@ -4,11 +4,11 @@ from base.const import ANNOTATIONS
 from base.namespace import create_namespace
 from .const import GRAFANA_ADMIN, GRAFANA_PASS, GRAFANA_NAMESPACE_NAME
 
-fb_config_map_data = f"""
+fb_config_map_data = """
 [SERVICE]
     Flush             5
     Grace             30
-    Log_Level         info
+    Log_Level         debug
     Daemon            off
     Parsers_File      parsers.conf
     HTTP_Server       On
@@ -17,8 +17,13 @@ fb_config_map_data = f"""
 [INPUT]
     Name    tail
     Tag     kube.*
-    Path    /var/log/containers/*.log
-    Parser  docker
+    Path        /var/log/containers/*.log    
+    Exclude_Path    /var/log/containers/fluent-bit*,/var/log/containers/aws-node*,/var/log/containers/kube-proxy*
+    multiline.parser    docker, cri
+    Buffer_Chunk_Size 10MB
+    Buffer_Max_Size   40MB
+    Skip_Long_Lines Off
+    Mem_Buf_Limit 100MB        
 [FILTER]
     Name             kubernetes
     Match            kube.*
@@ -35,6 +40,41 @@ fb_config_map_data = f"""
     host      loki-gateway.fluent-bit.svc.cluster.local
     port      80
     auto_kubernetes_labels on
+"""
+
+# parsers.conf
+parsers_conf = r"""
+[PARSER]
+    Name        syslog
+    Format          regex
+    Regex           ^(?<time>[^ ]* {1,2}[^ ]* [^ ]*) (?<host>[^ ]*) (?<ident>[a-zA-Z0-9_\/\.\-]*)(?:\[(?<pid>[0-9]+)\])?(?:[^\:]*\:)? *(?<message>.*)$
+    Time_Key        time
+    Time_Format     %b %d %H:%M:%S
+[PARSER]
+    Name        container_firstline
+    Format          regex
+    Regex           (?<log>(?<="log":")\S(?!\.).*?)(?<!\\)".*(?<stream>(?<="stream":").*?)".*(?<time>\d{4}-\d{1,2}-\d{1,2}T\d{2}:\d{2}:\d{2}\.\w*).*(?=})
+    Time_Key        time
+    Time_Format     %Y-%m-%dT%H:%M:%S.%LZ
+[PARSER]
+    Name   nginx
+    Format regex
+    Regex Regex ^(?<remote>[^ ]*) (?<host>[^ ]*) (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<method>\S+)(?: +(?<path>[^\"]*?)(?: +\S*)?)?" (?<code>[^ ]*) (?<size>[^ ]*)(?: "(?<referer>[^\"]*)" "(?<agent>[^\"]*)")
+    Time_Key time
+    Time_Format %d/%b/%Y:%H:%M:%S %z
+[PARSER]
+    Name        k8s-nginx-ingress
+    Format      regex
+    Regex       ^(?<host>[^ ]*) - (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<method>\S+)(?: +(?<path>[^\"]*?)(?: +\S*)?)?" (?<code>[^ ]*) (?<size>[^ ]*) "(?<referer>[^\"]*)" "(?<agent>[^\"]*)" (?<request_length>[^ ]*) (?<request_time>[^ ]*) \[(?<proxy_upstream_name>[^ ]*)\] (\[(?<proxy_alternative_upstream_name>[^ ]*)\] )?(?<upstream_addr>[^ ]*) (?<upstream_response_length>[^ ]*) (?<upstream_response_time>[^ ]*) (?<upstream_status>[^ ]*) (?<reg_id>[^ ]*).*$
+    Time_Key    time
+    Time_Format %d/%b/%Y:%H:%M:%S %z
+[PARSER]
+    Name cri
+    Format regex
+    Regex ^(?<time>[^ ]+) (?<stream>stdout|stderr) (?<logtag>[^ ]*) (?<message>.*)$
+    Time_Key    time
+    Time_Format %Y-%m-%dT%H:%M:%S.%L%z
+    Time_Keep   On    
 """
 
 
@@ -79,7 +119,8 @@ def create_fluent_bit_config_map(namespace):
             },
         },
         data={
-            "fluent-bit.conf": fb_config_map_data
+            "fluent-bit.conf": fb_config_map_data,
+            "parsers.conf": parsers_conf,
         },
     )
     return fbc
@@ -190,25 +231,25 @@ def create_loki(namespace, storage_class):
                     "replicas": 1,
                     "persistence": {
                         'storageClass': storage_class,
-                        "size": "1Gi",
+                        "size": "5Gi",
                     },
                 },
                 "read": {
                     "persistence": {
                         'storageClass': storage_class,
-                        "size": "1Gi",
+                        "size": "4Gi",
                     },
                 },
                 "write": {
                     "persistence": {
                         'storageClass': storage_class,
-                        "size": "1Gi",
+                        "size": "3Gi",
                     },
                 },
                 "backend": {
                     "persistence": {
                         'storageClass': storage_class,
-                        "size": "1Gi",
+                        "size": "2Gi",
                     },
                 },
 
