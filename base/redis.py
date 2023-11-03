@@ -29,7 +29,6 @@ def create_redis_standalone(
             namespace=namespace.metadata.name,
             values={
                 "logLevel": "debug",
-                "replicaCount": "1",
                 "region": REGION,
                 "architecture": "standalone",
                 "master": {

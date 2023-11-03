@@ -29,7 +29,7 @@ def create_postgres_standalone(
             namespace=namespace.metadata.name,
             values={
                 "logLevel": "debug",
-                "replicaCount": "1",
+                "replicaCount": 1,
                 "region": REGION,
                 "architecture": "standalone",
                 "primary": {
@@ -39,7 +39,7 @@ def create_postgres_standalone(
                         "storageClass": storage_class,
                     }
                 },
-                "replica": {
+                "readReplicas": {
                     "replicaCount": 0
                 },
                 "auth": {
