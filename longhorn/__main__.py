@@ -1,6 +1,7 @@
 import __init__
 from base.cluster import create_cluster
-from base.const import NAMESPACE_NAME
+from base.const import NAMESPACE_NAME, REGION, DB_SIZE
+from base.mongodb import create_mongodb_standalone
 from base.namespace import create_namespace
 from base.postgres import create_postgres_standalone
 from base.provider import create_provider
@@ -53,6 +54,18 @@ def up():
         provider=provider,
         namespace=namespace,
         storage_class="longhorn",
+    )
+    # Persistence Mongodb
+    create_mongodb_standalone(
+        provider=provider,
+        namespace=namespace,
+        name_prefix='example',
+        region=REGION,
+        storage_class="longhorn",
+        db_name='sample',
+        db_user='user',
+        db_password='pass',
+        size=DB_SIZE,
     )
     fluentbit.setup(
         provider,
