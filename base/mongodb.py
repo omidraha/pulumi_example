@@ -27,7 +27,7 @@ def create_mongodb_standalone(
     :return:
     @see: https://artifacthub.io/packages/helm/bitnami/mongodb
     """
-    log.info('[develop_sdk.postgres.create_mongodb_standalone]')
+    log.info('[base.mongodb.create_mongodb_standalone]')
     db = kubernetes.helm.v3.Release(
         f"mongodb-standalone{name_prefix}",
         kubernetes.helm.v3.ReleaseArgs(
