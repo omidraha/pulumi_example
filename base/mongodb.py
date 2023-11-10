@@ -42,12 +42,10 @@ def create_mongodb_standalone(
                 "replicaCount": 1,
                 "region": region,
                 "architecture": "standalone",
-                "primary": {
-                    "persistence": {
-                        "enabled": True,
-                        "size": size,
-                        "storageClass": storage_class,
-                    }
+                "persistence": {
+                    "enabled": True,
+                    "size": size,
+                    "storageClass": storage_class,
                 },
                 "auth": {
                     "enabled": True,
