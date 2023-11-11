@@ -124,7 +124,15 @@ def create_longhorn_nfs():
     )
 
 
-def create_longhorn(provider):
+def create_longhorn(
+        provider,
+        replica,
+):
+    """
+    :param provider:
+    :param replica:
+    :return:
+    """
     namespace = Namespace(
         f"longhorn-system{DEPLOY_NAME_PREFIX}",
         metadata={"name": "longhorn-system"},
@@ -142,6 +150,9 @@ def create_longhorn(provider):
             values={
                 "logLevel": "debug",
                 "region": REGION,
+                "persistence": {
+                    "defaultClassReplicaCount": replica
+                }
             },
         ),
         pulumi.ResourceOptions(
@@ -158,4 +169,7 @@ def setup(provider):
     """
     create_longhorn_iscsi()
     create_longhorn_nfs()
-    create_longhorn(provider)
+    create_longhorn(
+        provider=provider,
+        replica=3
+    )
