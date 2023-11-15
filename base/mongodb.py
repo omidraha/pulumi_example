@@ -49,9 +49,9 @@ def create_mongodb_standalone(
                 },
                 "auth": {
                     "enabled": True,
-                    "databases": db_name,
-                    "usernames": db_user,
-                    "passwords": db_password
+                    "databases": [db_name],
+                    "usernames": [db_user],
+                    "passwords": [db_password]
                 },
                 "fullnameOverride": "mongodb",
             },
