@@ -59,6 +59,8 @@ def create_mongodb_standalone(
         pulumi.ResourceOptions(
             provider=provider,
             parent=namespace,
+            # @see: https://github.com/pulumi/pulumi-kubernetes/issues/2649#issuecomment-1804479598
+            ignore_changes=["checksum"],
         )
     )
     return db
