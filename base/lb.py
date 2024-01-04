@@ -25,8 +25,14 @@ def create_metal_lb(
             ),
             namespace=namespace.metadata.name,
             values={
-                "logLevel": "debug",
-                "replicaCount": "1",
+                "controller":
+                    {
+                        "logLevel": "debug",
+                     },
+                "speaker":
+                    {
+                        "logLevel": "debug",
+                    },
             },
         ),
         opts=provider and pulumi.ResourceOptions(
