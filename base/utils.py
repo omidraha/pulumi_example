@@ -1,7 +1,8 @@
 import glob
-from pulumi import log
 from base.const import DEPLOY_NAME_PREFIX, SSH_KEY_PATH
 from pulumi_aws import ec2
+import pulumi_kubernetes
+from pulumi import log, Output
 
 
 def read_file(path):
@@ -27,3 +28,23 @@ def get_public_keys():
             )
             public_keys.append(key)
     return public_keys
+
+
+def dict_to_k8n_env_var_args(env: dict = None):
+    """
+    :param env:
+    :return:
+    """
+    log.info('[devops_sdk.utils.dict_to_k8n_env_var_args]')
+    if not env:
+        return None
+    env_vars = list()
+    for k, v in env.items():
+        env_vars.append(
+            pulumi_kubernetes.core.v1.EnvVarArgs(
+                name=k,
+                value=v.apply(lambda value: f'{value}')
+                if isinstance(v, Output) else str(v),
+            ),
+        )
+    return env_vars
