@@ -13,6 +13,7 @@ def create_ingress_nginx(
     """
     @see: https://kubernetes.github.io/ingress-nginx/developer-guide/code-overview/#helm-chart
     @see: https://github.com/kubernetes/ingress-nginx/tree/main/charts/ingress-nginx
+    @sse: https://github.com/kubernetes/ingress-nginx/blob/main/charts/ingress-nginx/values.yaml
     :return:
     """
     log.info('[devops_sdk.ingress.create_ingress_nginx]')
@@ -34,7 +35,10 @@ def create_ingress_nginx(
                         "type": "NodePort"
                     },
                     "dnsPolicy": "ClusterFirstWithHostNet",
-                    "hostNetwork": "true"
+                    "hostNetwork": "true",
+                    # @see: https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#allow-snippet-annotations
+                    # @see: https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#server-snippet
+                    "allowSnippetAnnotations": True,
                 },
             },
         ),
