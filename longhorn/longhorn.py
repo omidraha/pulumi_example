@@ -191,6 +191,16 @@ def setup(provider):
     """
     create_longhorn_iscsi()
     create_longhorn_nfs()
+    # @note: To install longhorn on specific node
+    node_name = 'Sample-node-name'
+    labels_to_add = {'tier': 'log'}
+    node_label_patch = kubernetes.core.v1.Node(
+        f'node-label-patch-01{DEPLOY_NAME_PREFIX}',
+        metadata={
+            'name': node_name,
+            'labels': labels_to_add
+        },
+    )
     create_longhorn(
         provider=provider,
         replica=3
