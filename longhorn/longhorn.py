@@ -152,7 +152,10 @@ def create_longhorn(
                 "logLevel": "debug",
                 "region": REGION,
                 "persistence": {
-                    "defaultClassReplicaCount": replica
+                    "defaultClassReplicaCount": replica,
+                    "defaultNodeSelector": {
+                        "tire": "log"
+                    },
                 },
                 'defaultSettings': {
                     'systemManagedComponentsNodeSelector': {
@@ -161,17 +164,17 @@ def create_longhorn(
                 },
                 'longhornManager': {
                     'nodeSelector': {
-                        "tire": "true"
+                        "tire": "log"
                     }
                 },
                 'longhornUI': {
                     'nodeSelector': {
-                        "tire": "true"
+                        "tire": "log"
                     }
                 },
                 'longhornDriver': {
                     'nodeSelector': {
-                        "tire": "true"
+                        "tire": "log"
                     }
                 },
             },
