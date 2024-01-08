@@ -132,6 +132,7 @@ def create_longhorn(
     :param provider:
     :param replica:
     :return:
+
     """
     namespace = Namespace(
         f"longhorn-system{DEPLOY_NAME_PREFIX}",
@@ -152,7 +153,27 @@ def create_longhorn(
                 "region": REGION,
                 "persistence": {
                     "defaultClassReplicaCount": replica
-                }
+                },
+                'defaultSettings': {
+                    'systemManagedComponentsNodeSelector': {
+                        "tire": "log"
+                    }
+                },
+                'longhornManager': {
+                    'nodeSelector': {
+                        "tire": "true"
+                    }
+                },
+                'longhornUI': {
+                    'nodeSelector': {
+                        "tire": "true"
+                    }
+                },
+                'longhornDriver': {
+                    'nodeSelector': {
+                        "tire": "true"
+                    }
+                },
             },
         ),
         pulumi.ResourceOptions(
