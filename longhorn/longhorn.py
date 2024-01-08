@@ -73,7 +73,10 @@ def create_longhorn_iscsi():
                             name="sleep",
                             image="registry.k8s.io/pause:3.1"
                         )
-                    ]
+                    ],
+                    node_selector={
+                        'tier': 'log'
+                    },
                 ),
             ),
             update_strategy=DaemonSetUpdateStrategyArgs(type="RollingUpdate"),
@@ -116,6 +119,9 @@ def create_longhorn_nfs():
                             image="registry.k8s.io/pause:3.1"
                         )
                     ],
+                    node_selector={
+                        'tier': 'log'
+                    },
                 ),
             ),
             update_strategy=DaemonSetUpdateStrategyArgs(type="RollingUpdate"),
