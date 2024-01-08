@@ -154,27 +154,27 @@ def create_longhorn(
                 "persistence": {
                     "defaultClassReplicaCount": replica,
                     "defaultNodeSelector": {
-                        "tire": "log"
+                        "tier": "log"
                     },
                 },
                 'defaultSettings': {
                     'systemManagedComponentsNodeSelector': {
-                        "tire": "log"
+                        "tier": "log"
                     }
                 },
                 'longhornManager': {
                     'nodeSelector': {
-                        "tire": "log"
+                        "tier": "log"
                     }
                 },
                 'longhornUI': {
                     'nodeSelector': {
-                        "tire": "log"
+                        "tier": "log"
                     }
                 },
                 'longhornDriver': {
                     'nodeSelector': {
-                        "tire": "log"
+                        "tier": "log"
                     }
                 },
             },
