@@ -158,9 +158,7 @@ def create_longhorn(
                     },
                 },
                 'defaultSettings': {
-                    'systemManagedComponentsNodeSelector': {
-                        "tier": "log"
-                    }
+                    'systemManagedComponentsNodeSelector': "tier:log"
                 },
                 'longhornManager': {
                     'nodeSelector': {
