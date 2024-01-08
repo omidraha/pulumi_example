@@ -234,11 +234,17 @@ def create_loki(namespace, storage_class):
                         'storageClass': storage_class,
                         "size": "5Gi",
                     },
+                    'nodeSelector': {
+                        "tier": "log"
+                    },
                 },
                 "read": {
                     "persistence": {
                         'storageClass': storage_class,
                         "size": "4Gi",
+                    },
+                    'nodeSelector': {
+                        "tier": "log"
                     },
                 },
                 "write": {
@@ -246,14 +252,19 @@ def create_loki(namespace, storage_class):
                         'storageClass': storage_class,
                         "size": "3Gi",
                     },
+                    'nodeSelector': {
+                        "tier": "log"
+                    },
                 },
                 "backend": {
                     "persistence": {
                         'storageClass': storage_class,
                         "size": "2Gi",
                     },
+                    'nodeSelector': {
+                        "tier": "log"
+                    },
                 },
-
             },
         ),
     )
