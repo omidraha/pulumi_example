@@ -208,6 +208,7 @@ def create_loki(namespace, storage_class):
     @see: https://grafana.com/docs/loki/next/setup/install/helm/install-scalable/
     @see: https://grafana.com/docs/loki/latest/installation/helm/install-monolithic/
     @see: https://grafana.com/docs/loki/next/setup/install/helm/reference/
+    @note: Applied nodeSelector: "tier": "log"
     """
     fb = kubernetes.helm.v3.Release(
         "loki",

@@ -35,6 +35,10 @@ if [ $? -eq 0 ]; then echo "nfs install successfully"; else echo "nfs install fa
 
 
 def create_longhorn_iscsi():
+    """
+    :return:
+    @note: Applied nodeSelector: "tier": "log"
+    """
     longhorn_iscsi_installation = DaemonSet(
         f"longhorn-iscsi{DEPLOY_NAME_PREFIX}",
         metadata={
@@ -85,6 +89,10 @@ def create_longhorn_iscsi():
 
 
 def create_longhorn_nfs():
+    """
+    :return:
+    @note: Applied nodeSelector: "tier": "log"
+    """
     longhorn_nfs_installation = DaemonSet(
         f"longhorn-nfs{DEPLOY_NAME_PREFIX}",
         metadata=ObjectMetaArgs(
@@ -138,6 +146,7 @@ def create_longhorn(
     :param provider:
     :param replica:
     :return:
+    @note: Applied nodeSelector: "tier": "log"
 
     """
     namespace = Namespace(
@@ -194,6 +203,7 @@ def setup(provider):
     """
     :param provider:
     :return:
+    @note: Applied nodeSelector: "tier": "log"
     """
     create_longhorn_iscsi()
     create_longhorn_nfs()
