@@ -7,6 +7,7 @@ def create_db(
         sng,
         db_res_name,
         db_name,
+        db_username,
         db_password,
         instance_class,
         is_public,
@@ -16,6 +17,7 @@ def create_db(
     :param sng: subnet group
     :param db_name: DB name
     :param db_res_name: DB res name
+    :param db_username: DB db_username
     :param db_password: DB password
     :param instance_class: db instance type
     :param is_public: is db public
@@ -27,7 +29,7 @@ def create_db(
         db_res_name,
         allocated_storage=20,
         db_name=db_name,
-        username="postgres",
+        username=db_username,
         password=db_password,
         engine="postgres",
         engine_version="12.17",
